@@ -1,11 +1,16 @@
+/**
+ * 
+ */
 package ml.bootcode.springsecuritytest.configurations;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +23,9 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * @author sunnyb
  *
  */
-//@Configuration
-//@EnableWebSecurity
-public class InMemorySecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+@Configuration
+public class HttpBasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private DataSource dataSource;
@@ -30,8 +35,8 @@ public class InMemorySecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("sunny").password(passwordEncoder().encode("sunny")).roles("USER").and()
-				.withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
+
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -41,13 +46,7 @@ public class InMemorySecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/", "/js/**", "/css/**", "/img/**", "/webjars/**")
-				.permitAll().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/public/**").permitAll().anyRequest().authenticated().and().formLogin()
-				.loginPage("/login").permitAll().successHandler(getApplicationAuthenticationSuccessHandler()).and()
-				.logout().deleteCookies("JSESSIONID").and().rememberMe()
-				.rememberMeCookieName("sunny-demo-application-cookie").tokenRepository(getPersistentTokenRepository())
-				.key("uniqueAndSecret");
+		http.csrf().disable().httpBasic().and().authorizeRequests().anyRequest().authenticated();
 	}
 
 	@Bean
