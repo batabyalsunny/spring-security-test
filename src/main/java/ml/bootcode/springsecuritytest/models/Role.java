@@ -3,6 +3,7 @@ package ml.bootcode.springsecuritytest.models;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class Role {
 	private Long id;
 
 	private String name;
-	@ManyToMany(mappedBy = "roles")
+	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
 	private Collection<User> users;
 
 	@ManyToMany

@@ -10,7 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.springframework.stereotype.Component;
+
 @Entity
+@Component
 public class User {
 
 	@Id

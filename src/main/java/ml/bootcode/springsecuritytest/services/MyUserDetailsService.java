@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import ml.bootcode.springsecuritytest.models.Privilege;
 import ml.bootcode.springsecuritytest.models.Role;
@@ -22,8 +19,8 @@ import ml.bootcode.springsecuritytest.models.User;
 import ml.bootcode.springsecuritytest.repositories.RoleRepository;
 import ml.bootcode.springsecuritytest.repositories.UserRepository;
 
-@Service("userDetailsService")
-@Transactional
+//@Service("userDetailsService")
+//@Transactional
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
